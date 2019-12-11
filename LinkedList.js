@@ -44,6 +44,11 @@ function push(value) {
     length++;
 }
 //在链表中任意一个元素之后插入一个元素
+/**
+ * 
+ * @param {*} value 待插入的元素
+ * @param {*} item 要插入在哪个元素之后
+ */
 function insertAfter(value, item) {
     var node = new Node(value);
     var current = this.find(item);
@@ -56,12 +61,16 @@ function insertAfter(value, item) {
 }
 //从链表中删除值为value的元素
 function remove(value) {
-    var previous = this.findPrevious(value);
     var current = this.find(value);
-    if (previous == null) {
+    if (!current) {
         return console.log('链表中找不到被删除的元素');
     }
-    previous.next = current.next;
+    var previous = this.findPrevious(value);
+    if (!previous) {
+      this.head = current.next;
+    } else {
+      previous.next = current.next;
+    }
     length--;
 }
 //删除链表中第pos个元素
@@ -110,11 +119,15 @@ function findPrevious(value) {
         console.log('这是一个空链表');
         return null;
     }
+    if (current.value === value) {
+        console.log('当前查找的节点为链表的头节点，头节点前再无节点');
+        return null;
+    }
     while (current.next) {
-        current = current.next;
         if (current.next.value === value) {
             return current;
         }
+        current = current.next;
     }
     console.log('找不到该元素的前一个元素');
     return null;
